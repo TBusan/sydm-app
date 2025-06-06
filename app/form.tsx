@@ -1,4 +1,4 @@
-import { Video } from "expo-av";
+import { ResizeMode, Video } from "expo-av";
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -125,7 +125,7 @@ export default function FormScreen() {
           source={{ uri: item.uri }}
           style={styles.mediaPreview}
           useNativeControls
-          resizeMode="contain"
+          resizeMode={ResizeMode.CONTAIN}
         />
       )}
       <TouchableOpacity onPress={() => removeMedia(index)} style={styles.removeButton}>
