@@ -1,4 +1,3 @@
-import { Stack } from "expo-router";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
@@ -24,8 +23,6 @@ export default function FormScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <Stack.Screen options={{ title: "Form" }} />
-      
       <View style={styles.formContainer}>
         <Text style={styles.label}>Name</Text>
         <TextInput

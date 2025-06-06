@@ -1,5 +1,4 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Stack } from "expo-router";
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function UserScreen() {
@@ -20,8 +19,6 @@ export default function UserScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <Stack.Screen options={{ title: "User Profile" }} />
-      
       <View style={styles.header}>
         <Image 
           source={{ uri: user.avatar }} 

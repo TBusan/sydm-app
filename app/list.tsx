@@ -1,4 +1,3 @@
-import { Stack } from "expo-router";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type Item = {
@@ -23,7 +22,6 @@ export default function ListScreen() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: "List" }} />
       <FlatList
         data={DATA}
         renderItem={renderItem}

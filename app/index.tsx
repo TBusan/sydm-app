@@ -1,33 +1,10 @@
-import { Link, Stack } from "expo-router";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: "Home" }} />
-      
-      <Text style={styles.title}>Welcome to the App</Text>
-      <Text style={styles.description}>Select a screen to navigate:</Text>
-
-      <View style={styles.menuContainer}>
-        <Link href="/list" asChild>
-          <TouchableOpacity style={styles.menuItem}>
-            <Text style={styles.menuText}>List</Text>
-          </TouchableOpacity>
-        </Link>
-
-        <Link href="/form" asChild>
-          <TouchableOpacity style={styles.menuItem}>
-            <Text style={styles.menuText}>Form</Text>
-          </TouchableOpacity>
-        </Link>
-
-        <Link href="/user" asChild>
-          <TouchableOpacity style={styles.menuItem}>
-            <Text style={styles.menuText}>User Profile</Text>
-          </TouchableOpacity>
-        </Link>
-      </View>
+      <Text style={styles.title}>欢迎使用</Text>
+      <Text style={styles.description}>这是应用首页，您可以使用底部导航栏切换不同功能</Text>
     </View>
   );
 }
@@ -50,20 +27,5 @@ const styles = StyleSheet.create({
     color: "#666",
     marginBottom: 30,
     textAlign: "center",
-  },
-  menuContainer: {
-    width: "100%",
-  },
-  menuItem: {
-    backgroundColor: "#007AFF",
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 15,
-    alignItems: "center",
-  },
-  menuText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "500",
   },
 });
