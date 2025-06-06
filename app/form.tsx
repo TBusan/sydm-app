@@ -1,15 +1,17 @@
+import * as ImagePicker from 'expo-image-picker';
 import { useState } from "react";
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function FormScreen() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    message: ""
+    message: "",
+    image: null
   });
 
-  const handleChange = (field: keyof typeof formData, value: string) => {
+  const handleChange = (field: keyof typeof formData, value: string | null) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -19,6 +21,45 @@ export default function FormScreen() {
   const handleSubmit = () => {
     console.log("Form submitted:", formData);
     // Add your form submission logic here
+  };
+
+  const pickImage = async (useCamera = false) => {
+    // Request permissions first
+    if (useCamera) {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Camera permission is required to take photos!');
+        return;
+      }
+    } else {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Media library permission is required to select images!');
+        return;
+      }
+    }
+
+    // Launch camera or image picker
+    let result;
+    if (useCamera) {
+      result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.7,
+      });
+    } else {
+      result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.7,
+      });
+    }
+
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      handleChange('image', result.assets[0].uri);
+    }
   };
 
   return (
@@ -59,6 +100,25 @@ export default function FormScreen() {
           multiline={true}
           numberOfLines={4}
         />
+
+        <Text style={styles.label}>Upload Image</Text>
+        <View style={styles.uploadContainer}>
+          <TouchableOpacity style={styles.uploadButton} onPress={() => pickImage(false)}>
+            <Text style={styles.uploadButtonText}>Choose from Gallery</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.uploadButton} onPress={() => pickImage(true)}>
+            <Text style={styles.uploadButtonText}>Take Photo</Text>
+          </TouchableOpacity>
+        </View>
+
+        {formData.image && (
+          <View style={styles.imagePreviewContainer}>
+            <Image source={{ uri: formData.image }} style={styles.imagePreview} />
+            <TouchableOpacity onPress={() => handleChange('image', null)} style={styles.removeButton}>
+              <Text style={styles.removeButtonText}>Remove</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Submit</Text>
@@ -105,5 +165,45 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '500',
-  }
-}); 
+  },
+  uploadContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  uploadButton: {
+    backgroundColor: '#4CAF50',
+    padding: 12,
+    borderRadius: 5,
+    alignItems: 'center',
+    flex: 0.48,
+  },
+  uploadButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  imagePreviewContainer: {
+    marginTop: 15,
+    alignItems: 'center',
+  },
+  imagePreview: {
+    width: '100%',
+    height: 200,
+    borderRadius: 5,
+    resizeMode: 'cover',
+  },
+  removeButton: {
+    backgroundColor: '#FF3B30',
+    padding: 8,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 10,
+    width: '30%',
+  },
+  removeButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+}) 
