@@ -195,7 +195,23 @@ export default function FormScreen() {
         {formData.media.length > 0 && (
           <View style={styles.mediaContainer}>
             <Text style={styles.mediaCount}>{formData.media.length} items selected</Text>
-            {formData.media.map((item, index) => renderMediaItem({ item, index }))}
+            {formData.media.map((item, index) => (
+              <View key={`media-${index}`} style={styles.mediaItem}>
+                {item.type === 'image' ? (
+                  <Image source={{ uri: item.uri }} style={styles.mediaPreview} />
+                ) : (
+                  <Video
+                    source={{ uri: item.uri }}
+                    style={styles.mediaPreview}
+                    useNativeControls
+                    resizeMode={ResizeMode.CONTAIN}
+                  />
+                )}
+                <TouchableOpacity onPress={() => removeMedia(index)} style={styles.removeButton}>
+                  <Text style={styles.removeButtonText}>Remove</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
           </View>
         )}
 
